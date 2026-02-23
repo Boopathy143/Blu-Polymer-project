@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blu Polymer Dashboard</title>
+<style>
+body{font-family:Segoe UI;padding:15px;background:#f8fafc}
+.card{background:white;padding:15px;margin-bottom:15px;border-radius:10px}
+table{width:100%;border-collapse:collapse}
+th,td{border-bottom:1px solid #ddd;padding:6px;text-align:center}
+th{background:#0f172a;color:white}
+button{padding:8px;background:#0f172a;color:white;border:none}
+</style>
+</head>
+<body>
+
+<h2>Blu Polymer Production Dashboard</h2>
+
+<input type="date" id="filterDate">
+<button onclick="loadData()">Load</button>
+
+<div class="card">
+<h3>Summary</h3>
+<p>Total Production: <b id="prod"></b></p>
+<p>Total Rejection: <b id="rej"></b></p>
+<p>Total Grinding: <b id="grind"></b></p>
+<p>Total Dispatch: <b id="dispatch"></b></p>
+</div>
+
+<div class="card">
+<h3>Machine Wise</h3>
+<table>
+<thead>
+<tr>
+<th>Dept</th>
+<th>Machine</th>
+<th>Prod</th>
+<th>Rej</th>
+<th>Grinding</th>
+<th>Dispatch</th>
+</tr>
+</thead>
+<tbody id="machineTable"></tbody>
+</table>
+</div>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbzIXg8bJdH8h8VIDGtV3V0VgtE4rc7YBkn3IXmXQhvxljR-o3jYP023vICkw8A3sGp0/exec";
+
+async function loadData(){
+let res=await fetch(API_URL);
+let data=await res.json();
+let date=filterDate.value;
+
+let totalP=0,totalR=0,totalG=0,totalD=0;
+let table="";
+
+for(let i=1;i<data.length;i++){
+let r=data[i];
+
+if(date && r[1]!==date) continue;
+
+totalP+=Number(r[6]);
+totalR+=Number(r[7]);
+totalG+=Number(r[8]);
+totalD+=Number(r[9]);
+
+table+=`
+<tr>
+<td>${r[2]}</td>
+<td>${r[3]}</td>
+<td>${r[6]}</td>
+<td>${r[7]}</td>
+<td>${r[8]}</td>
+<td>${r[9]}</td>
+</tr>
+`;
+}
+
+prod.innerText=totalP;
+rej.innerText=totalR;
+grind.innerText=totalG;
+dispatch.innerText=totalD;
+machineTable.innerHTML=table;
+}
+
+loadData();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blowing Entry</title>
+<style>
+body{font-family:Segoe UI;padding:15px;background:#f1f5f9}
+input,select{width:100%;padding:8px;margin:6px 0}
+button{padding:10px;background:#0f172a;color:white;border:none}
+</style>
+</head>
+<body>
+
+<h2>Blowing Department</h2>
+
+<input type="date" id="date">
+
+<select id="machine">
+<option>IBM-1</option>
+<option>IBM-2</option>
+<option>IBM-3</option>
+<option>EBM-1</option>
+<option>EBM-2</option>
+<option>EBM-3</option>
+<option>EBM-4</option>
+</select>
+
+<input id="brand" placeholder="Brand">
+<input id="sku" placeholder="SKU">
+<input id="production" placeholder="Production">
+<input id="rejection" placeholder="Rejection">
+<input id="grinding" placeholder="Grinding">
+<input id="dispatch" placeholder="Lot Dispatch">
+<input id="shift" placeholder="Shift">
+<input id="operator" placeholder="Operator">
+
+<button onclick="submitData()">Submit</button>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbzIXg8bJdH8h8VIDGtV3V0VgtE4rc7YBkn3IXmXQhvxljR-o3jYP023vICkw8A3sGp0/exec";
+
+async function submitData(){
+await fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+date:date.value,
+department:"Blowing",
+machine:machine.value,
+brand:brand.value,
+sku:sku.value,
+production:production.value,
+rejection:rejection.value,
+grinding:grinding.value,
+dispatch:dispatch.value,
+shift:shift.value,
+status:"Completed",
+operator:operator.value
+})
+});
+alert("Saved");
+}
+</script>
+
+</body>
+</html>
